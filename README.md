@@ -84,3 +84,40 @@ Installer 다운로드 -> Installer 실행 -> 프로그램 설치완료
 2. 도커 이미지에 있는 파일 스냅샷을 하드디스크로 이동
 3. 이미지에서 가지고 있는 명령어를 사용하여 프로그램 실행
 
+## 클라이언트 명령어
+- 실행중인 프로세스 확인하는 명령어
+1. docker : docker 클라이언트에 언급
+2. ps : process status 줄임
+
+- 확인 방법 : 2개의 터미널을 사용하여 한 터미널에서는 컨테이너의 실행, 다른 하나는 상태를 확인한다.
+- 컨테이너 아이디, 이미지, 생성시간 등 컨테이너에 대한 `메타 데이터`를 확인할 수 있다.
+
+## 컨테이너 생명주기
+- 생성(create) - 시작(start) - 실행(run) - 중지(stop) - 삭제(rm)
+
+1. `docker create hello-world`
+   - 생성된 컨테이너의 id 확인 가 (파일 스냅샷 생성)
+2. `docker start -a [container ID]`
+   - `-a` : attach, ID의 일부만 입력해도 자동으로 실행됨. docker 컨테이너의 아웃풋을 화면에 표시함
+3. `stop` : 기존 실행중인 내역 종료 후 컨테이너 종료(SIGTERM) `kill` : 기존 실행중인 내역이 있어도 바로 중단
+4. ```shell
+   docker rm `docker ps -a -q` # 모든 컨테이너 삭제
+   docker rmi [image ID] # 모든 이미지 삭제
+   ```
+   
+## 실행 중인 컨테이너에 명령어 전달
+`docker exec [container ID] [명령어]`
+
+# REDIS
+- 레디스 서버가 작동중인 상태에서 레디스 클라이언트로 명령어를 서버에 전달
+
+1. `docker run redis` : 레디스 서버 실행
+2. 새 터미널에서 `redis-cli` 실행 시 오류 : 레디스 서버 밖에서 실행했기 때문에 에러 발생
+   - 레디스 클라이언트도 컨테이너 안에서 실행해야 함
+3. `docker exec -it [container ID] redis-cli`
+   - 실행 전에 `docker ps` 명령어로 동작중인 redis 서버의 id 확인 가능
+   - `-it` 명령어가 있어야 실행 후 계속 명령어 작성 가능 (interactive terminal)
+- 컨테이너에 명령을 전달할 때 터미널로 접속하는 방법 : 명령어 부분에 `sh` 입력
+
+
+   
